@@ -1,0 +1,14 @@
+name: Dragon-Fly
+version: '${project.version}'
+main: me.mike3132.dragonfly.Main
+api-version: 1.19
+authors: [ Mike3132 ]
+description: Fly for the cost of fuel
+website: https://www.ragnarok.icu
+commands:
+  Fly:
+    description: Enable or Disable fly
+    permission: dragonFly.Use
+  DragonFly:
+    description: Admin Commands
+    permission: dragonFly.Admin

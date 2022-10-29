@@ -1,0 +1,35 @@
+#                                                 🖥🖥🖥🖥🖥🖥🖥🖥🖥🖥🖥🖥🖥
+#                                                   💻Dragon Fly Config💻
+#                                                   🔥Coded By Mike3132🔥
+#                                                   💻Dragon Fly Config💻
+#                                                 🖥🖥🖥🖥🖥🖥🖥🖥🖥🖥🖥🖥🖥
+
+Version: 'Version 1.0'
+ConfigVersion: '1.0'
+##### WARNING: DO NOT CHANGE ANYTHING ABOVE THIS LINE IT WILL BREAK THE PLUGIN!#####
+
+#✍✍✍✍✍Permissions✍✍✍✍✍
+#dragonFly.Admin > Grants access to /dragonfly commands
+#dragonFly.Reload > Reloads the plugin *(You must also have dragonFly.Admin)*
+#dragonFly.Adminfly > Grants access to use the free adminfly command *(You must also have dragonFly.Admin)*
+#dragonFly.Toggle.Others > Ability to toggle other players flight *(You must also have dragonFly.Admin)*
+#dragonFly.Use > Grants access to /fly command
+#dragonFly.Fuel > Uses fuel blocks to fly *(You must also have dragonFly.Use)*
+#dragonFly.NoFuel > Free flight *(You must also have dragonFly.Use)*
+#✍✍✍✍✍Permissions✍✍✍✍✍
+
+#####You can Modify the following how you wish#####
+#♢♢♢♢♢Fuel Block♢♢♢♢♢
+Fuel: 'REDSTONE'
+
+#♢♢♢♢♢ Amount of time for fuel to last (In game ticks [20 ticks = 1 second]) ♢♢♢♢♢
+#☠☠☠☠ WARNING: You must restart the server for this to take effect.☠☠☠☠
+Fuel-Time: 60
+
+#See messages.yml for all configurable plugin messages
+#♏ If you have any questions please join my discord, open a support ticket and @Mike3132
+#♏ https://discord.gg/EHm6Ra3K
+#♏ Thanks for downloading and have a wonderful day
+
+#♛♛♛♛♛ END OF CONFIG ♛♛♛♛♛
+#This is the default file.
