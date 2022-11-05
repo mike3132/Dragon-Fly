@@ -20,6 +20,9 @@ ConfigVersion: '1.0'
 
 #####You can Modify the following how you wish#####
 #♢♢♢♢♢Fuel Block♢♢♢♢♢
+#☠☠☠☠ You must use single quotes '' as seen in this default config.☠☠☠☠
+# This is the item that is being used to allow them to fly, All material types can be used.
+# You can find a list of materials here > https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 Fuel: 'REDSTONE'
 
 #♢♢♢♢♢ Amount of time for fuel to last (In game ticks [20 ticks = 1 second]) ♢♢♢♢♢
@@ -32,4 +35,4 @@ Fuel-Time: 60
 #♏ Thanks for downloading and have a wonderful day
 
 #♛♛♛♛♛ END OF CONFIG ♛♛♛♛♛
-#This is the default file.
+#This is the default config file.

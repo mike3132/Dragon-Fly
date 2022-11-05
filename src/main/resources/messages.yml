@@ -7,6 +7,7 @@
 #✍✍✍✍ This file handles all messages for the plugin including the prefix.✍✍✍✍
 #✍✍✍✍ You can change anything here to be whatever custom stuff you want.✍✍✍✍
 #☠☠☠☠ DO NOT CHANGE THE "Messages:" line as this will break the plugin.☠☠☠☠
+#☠☠☠☠ ALL messages must have single quotes '' as seen in this default config.☠☠☠☠
 
 #📝📝📝📝 Placeholders 📝📝📝📝
 #Placehodler %Fuel% - Returns the material of the fuel from config.yml
@@ -47,7 +48,8 @@ Messages:
   #Warning for player who is out of fuel.
   Out-Of-Fuel: '&4&lWARNING: &cYou are out of fuel'
 
-  #Warning for player who has ran out of fuel and is free falling from the sky.
+  #Warning for player who has run out of fuel and is free-falling from the sky.
+  #The plugin will automatically negate all fall damage if the player runs out of fuel while flying.
   Free-Falling-Message: '&eNegating fall damage'
 
 
@@ -97,4 +99,4 @@ Messages:
 #♏ https://discord.gg/EHm6Ra3K
 #♏ Thanks for downloading and have a wonderful day
 #♛♛♛♛♛ End of messages.yml ♛♛♛♛♛
-#This is the default file,
+#This is the default messages file.
