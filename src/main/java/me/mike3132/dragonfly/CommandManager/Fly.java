@@ -1,7 +1,10 @@
 package me.mike3132.dragonfly.CommandManager;
 
-import me.mike3132.dragonfly.ChatManager.Messages;
-import me.mike3132.dragonfly.EventHandler.FallEvent;
+import me.mike3132.dragonfly.ChatManager.ChatMessages;
+import me.mike3132.dragonfly.FlyManager.CostFlyManager;
+import me.mike3132.dragonfly.FlyManager.FreeFlyManager;
+import me.mike3132.dragonfly.HashSetManager.CostFlyingSet;
+import me.mike3132.dragonfly.HashSetManager.FreeFlyingSet;
 import me.mike3132.dragonfly.Main;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -12,13 +15,8 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Fly implements CommandExecutor {
-
-
-    public static List<UUID> flyingPlayers = new ArrayList<>();
-    public static List<UUID> freeFlyingPlayers = new ArrayList<>();
 
 
     public Fly() {
@@ -32,44 +30,48 @@ public class Fly implements CommandExecutor {
         Player player = (Player) sender;
         if (args.length == 0) {
             if (!player.hasPermission("dragonFly.Use")) {
-                Messages.sendMessage(player, "No-Permission");
+                ChatMessages.sendMessage(player, "No-Permission");
+                return false;
             }
             if (!player.getGameMode().equals(GameMode.SURVIVAL)) {
-                Messages.sendMessage(player, "Not-In-Survival");
+                ChatMessages.sendMessage(player, "Not-In-Survival");
+                return false;
             }
+            boolean blacklistEnabled = Main.plugin.getConfig().getBoolean("World-Blacklist-Enabled");
+            String worldName = player.getWorld().getName();
+            List<String> blacklistedWorlds = new ArrayList<>();
+            for (String world : Main.plugin.getConfig().getStringList("World-Blacklist")) {
+                blacklistedWorlds.add(world);
+            }
+
             if (player.hasPermission("dragonFly.NoFuel")) {
-                if (!freeFlyingPlayers.contains(player.getUniqueId())) {
-                    freeFlyingPlayers.add(player.getUniqueId());
-                    player.setAllowFlight(true);
-                    player.setFlying(true);
-                    Messages.sendMessage(player, "Flight-Enabled");
-                } else {
-                    freeFlyingPlayers.remove(player.getUniqueId());
-                    FallEvent.fallingPlayers.add(player.getUniqueId());
-                    player.setAllowFlight(false);
-                    player.setFlying(false);
-                    Messages.sendMessage(player, "Flight-Disabled");
+                if (!FreeFlyingSet.getFlyingPlayers().contains(player.getUniqueId())) {
+                    if (blacklistEnabled && blacklistedWorlds.contains(worldName)) {
+                        ChatMessages.sendMessage(player, "Fl-Enabled-Blacklisted-World");
+                        return true;
+                    }
+                    FreeFlyManager.onAddPlayer(player);
+                    return false;
                 }
+                FreeFlyManager.onRemovePlayer(player);
+
             } else {
                 if (player.hasPermission("dragonFly.Fuel")) {
                     if (!player.getInventory().contains(Material.valueOf(Main.plugin.getConfig().getString("Fuel")))) {
-                        Messages.fuelPllaceholderMessage(player, "No-Fuel-In-Inventory", Main.plugin.getConfig().getString("Fuel"));
-                    } else {
-                        if (!flyingPlayers.contains(player.getUniqueId())) {
-                            flyingPlayers.add(player.getUniqueId());
-                            player.setAllowFlight(true);
-                            player.setFlying(true);
-                            Messages.sendMessage(player, "Flight-Enabled");
-                        } else {
-                            flyingPlayers.remove(player.getUniqueId());
-                            FallEvent.fallingPlayers.add(player.getUniqueId());
-                            player.setAllowFlight(false);
-                            player.setFlying(false);
-                            Messages.sendMessage(player, "Flight-Disabled");
-                        }
+                        ChatMessages.fuelPllaceholderMessage(player, "No-Fuel-In-Inventory", Main.plugin.getConfig().getString("Fuel"));
+                        return false;
                     }
+                    if (!CostFlyingSet.getFlyingPlayers().contains(player.getUniqueId())) {
+                        if (blacklistEnabled && blacklistedWorlds.contains(worldName)) {
+                            ChatMessages.sendMessage(player, "Fl-Enabled-Blacklisted-World");
+                            return true;
+                        }
+                        CostFlyManager.onAddPlayer(player);
+                        return false;
+                    }
+                    CostFlyManager.onRemovePlayer(player);
                 } else {
-                    Messages.sendMessage(player, "No-Fly-Extra-Permission");
+                    ChatMessages.sendMessage(player, "No-Fly-Extra-Permission");
                 }
             }
         }

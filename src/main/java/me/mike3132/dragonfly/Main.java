@@ -1,23 +1,29 @@
 package me.mike3132.dragonfly;
 
-import me.mike3132.dragonfly.ChatManager.Messages;
+import me.mike3132.dragonfly.ChatManager.ChatMessages;
 import me.mike3132.dragonfly.CommandManager.DragonFly;
 import me.mike3132.dragonfly.CommandManager.Fly;
+import me.mike3132.dragonfly.ConfigManager.ConfigCreator;
 import me.mike3132.dragonfly.EventHandler.FallEvent;
+import me.mike3132.dragonfly.EventHandler.GameModeChangeEvent;
+import me.mike3132.dragonfly.EventHandler.WorldChangeEvent;
+import me.mike3132.dragonfly.FlyManager.CostFlyManager;
+import me.mike3132.dragonfly.FlyManager.FallManager;
+import me.mike3132.dragonfly.HashSetManager.CostFlyingSet;
+import me.mike3132.dragonfly.HashSetManager.FallingPlayersSet;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
-
 public final class Main extends JavaPlugin {
+    /**
+     *
+     * @param chatColor The string of the chat color that is being used.
+     * @return Returns the corresponding Bukkit color code to the & code that is used.
+     */
     public static String chatColor(String chatColor) {
         return ChatColor.translateAlternateColorCodes('&', chatColor);
     }
@@ -32,6 +38,8 @@ public final class Main extends JavaPlugin {
 
         // Event Listener
         Bukkit.getPluginManager().registerEvents(new FallEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new WorldChangeEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new GameModeChangeEvent(), this);
 
         // Command Loader
         registerFly();
@@ -40,12 +48,20 @@ public final class Main extends JavaPlugin {
         // Config Loader
         saveDefaultConfig();
         getConfig();
-        createFiles();
+        ConfigCreator.MESSAGES.create();
 
-        // Task Timer for fly countdown (This runs 20 ticks after plugin loads)
+        /**
+         *  This scheduler handles all current players flying at a cost. This will start running 20 ticks (1 second)
+         *  after the plugin loads. I first get a list of all online players, and then I check to see if the cost flying
+         *  players contains a player, I then check to see if they have the fuel material that is set in the config.yml
+         *  inside their inventory, and they have at least 1 fuel. If all checks are passed I give them flight and then
+         *  after every amount of ticks that has been set in the config.yml I remove 1 fuel from their inventory.
+         *  When the player runs out of fuel they are sent a message, and they are then added to the free-falling players
+         *  set.
+         */
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if (Fly.flyingPlayers.contains(player.getUniqueId())) {
+                if (CostFlyingSet.getFlyingPlayers().contains(player.getUniqueId())) {
                     for (ItemStack item : player.getInventory().getContents()) {
                         if (item != null && item.getType().equals(Material.valueOf(this.getConfig().getString("Fuel")))) {
                             if (item.getAmount() >= 1) {
@@ -55,13 +71,11 @@ public final class Main extends JavaPlugin {
                             }
                         }
                         if (!(player.getInventory().contains(Material.valueOf(this.getConfig().getString("Fuel"))))) {
-                            Messages.sendMessage(player, "Out-Of-Fuel");
-                            Messages.sendMessage(player, "Free-Falling-Message");
-                            Messages.sendMessage(player, "Flight-Disabled");
-                            Fly.flyingPlayers.remove(player.getUniqueId());
-                            FallEvent.fallingPlayers.add(player.getUniqueId());
-                            player.setAllowFlight(false);
-                            player.setFlying(false);
+                            ChatMessages.sendMessage(player, "Out-Of-Fuel");
+                            ChatMessages.sendMessage(player, "Free-Falling-Message");
+                            CostFlyManager.onRemovePlayer(player);
+                            FallingPlayersSet.addFallingPlayers(player.getUniqueId());
+                            FallManager.onFallingPlayer(player);
                             break;
                         }
                     }
@@ -71,29 +85,17 @@ public final class Main extends JavaPlugin {
 
     }
 
-    // Messages.yml file creation
-    private File messages;
-    private FileConfiguration config;
 
-    private void createFiles() {
-        messages = new File(getDataFolder(), "messages.yml");
-        if (!messages.exists()) {
-            messages.getParentFile().mkdirs();
-            saveResource("messages.yml", false);
-        }
-        config = new YamlConfiguration();
-        try {
-            config.load(messages);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Command register
+    /**
+     * Registers the fly command
+     */
     public void registerFly() {
         new Fly();
     }
 
+    /**
+     * Registers the DragonFly command (This handles all admin commands)
+     */
     public void registerDragonFly() {
         new DragonFly();
     }

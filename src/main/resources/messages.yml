@@ -38,6 +38,12 @@ Messages:
   #If the player does NOT have fuel (See config.yml for fuel settings) in their inventory.
   No-Fuel-In-Inventory: '&4ERROR: &cYou need &4%Fuel% &cto fly'
 
+  #If player enters a blacklisted world (See config.yml for world blacklists).
+  Enter-Blacklisted-World: '&cYou have entered a &4&lBlacklisted &cworld'
+
+  #If player tries to turn on fly in a blacklisted world (See config.yml for world blacklists).
+  Fl-Enabled-Blacklisted-World: '&cYou cannot use fly in a &4&lBlacklisted &cworld'
+
   #🛑🛑🛑🛑🛑 IMPORTANT 🛑🛑🛑🛑🛑
   #When a player runs out of fuel while flying they are sent a few messages.
   #This is the order they are sent.
@@ -62,7 +68,7 @@ Messages:
   Help-C: '&6/DragonFly reload &7-> &eReloads plugin configuration files'
   Help-D: '&6/DragonFly toggle <playerName> &7-> &eToggles specified players flight'
   Help-E: '&6/DragonFly adminfly &7-> &eToggles free admin flight'
-  Help-Footer: '&e----- &0[&bDragon &fFly&0] &e-----'
+  Help-Footer: '&e----------------------------------'
 
   #This is sent if someone has dragonFly.Admin and they just type /dragonfly
   Help-Trigger: '&5ADMIN &4ERROR: &cNot enough command argumenets. &ePlease use /dragonfly help'
