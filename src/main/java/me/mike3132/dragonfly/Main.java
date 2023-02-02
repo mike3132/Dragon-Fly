@@ -1,6 +1,7 @@
 package me.mike3132.dragonfly;
 
 import me.mike3132.dragonfly.ChatManager.ChatMessages;
+import me.mike3132.dragonfly.CommandManager.AdminFly;
 import me.mike3132.dragonfly.CommandManager.DragonFly;
 import me.mike3132.dragonfly.CommandManager.Fly;
 import me.mike3132.dragonfly.ConfigManager.ConfigCreator;
@@ -44,6 +45,7 @@ public final class Main extends JavaPlugin {
         // Command Loader
         registerFly();
         registerDragonFly();
+        registerAdminFly();
 
         // Config Loader
         saveDefaultConfig();
@@ -98,6 +100,10 @@ public final class Main extends JavaPlugin {
      */
     public void registerDragonFly() {
         new DragonFly();
+    }
+
+    public void registerAdminFly() {
+        new AdminFly();
     }
 
 

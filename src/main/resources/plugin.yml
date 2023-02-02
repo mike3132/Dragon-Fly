@@ -12,3 +12,6 @@ commands:
   DragonFly:
     description: Admin Commands
     permission: dragonFly.Admin
+  AdminFly:
+    description: Flight for admins
+    permission: dragonFly.AdminFly

@@ -1,8 +1,6 @@
 package me.mike3132.dragonfly.CommandManager;
 
 import me.mike3132.dragonfly.ChatManager.ChatMessages;
-import me.mike3132.dragonfly.ConfigManager.ConfigCreator;
-import me.mike3132.dragonfly.EventHandler.WorldChangeEvent;
 import me.mike3132.dragonfly.HashSetManager.CostFlyingSet;
 import me.mike3132.dragonfly.HashSetManager.FreeFlyingSet;
 import me.mike3132.dragonfly.Main;
@@ -12,13 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class DragonFly implements CommandExecutor {
-
-    private final static List<UUID> flyingAdmins = new ArrayList<>();
 
     public DragonFly() {
         Main.plugin.getCommand("DragonFly").setExecutor(this);
@@ -48,23 +40,6 @@ public class DragonFly implements CommandExecutor {
                         ChatMessages.sendMessageNoPrefix(player, "Help-D");
                         ChatMessages.sendMessageNoPrefix(player, "Help-E");
                         ChatMessages.sendMessage(player, "Help-Footer");
-                        break;
-                    case "ADMINFLY":
-                        if (!player.hasPermission("dragonFly.AdminFly")) {
-                            ChatMessages.sendMessage(player, "No-AdminFly-Permission");
-                            return false;
-                        }
-                        if (!flyingAdmins.contains(player.getUniqueId())) {
-                            flyingAdmins.add(player.getUniqueId());
-                            player.setAllowFlight(true);
-                            player.setFlying(true);
-                            ChatMessages.sendMessage(player, "Admin-Flight-Enabled");
-                            return false;
-                        }
-                        flyingAdmins.remove(player.getUniqueId());
-                        player.setAllowFlight(false);
-                        player.setFlying(false);
-                        ChatMessages.sendMessage(player, "Admin-Flight-Disabled");
                         break;
                     case "TOGGLE":
                         if (!player.hasPermission("dragonFly.Toggle.Others")) {
