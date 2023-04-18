@@ -100,7 +100,7 @@ Messages:
   #When you disable a players flight with /DragonFly toggle <player>
   Target-Flight-Disabled: '&5Admin &6You have disabled flight for &e%playerName%'
 
-#See config.yml for permissions, and other plugin configurations
+#See config.yml for permissions, and other plugin configurations.
 #♏ If you have any questions please join my discord, open a support ticket and @Mike3132
 #♏ https://discord.gg/EHm6Ra3K
 #♏ Thanks for downloading and have a wonderful day
