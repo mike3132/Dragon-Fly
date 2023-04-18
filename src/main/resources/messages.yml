@@ -42,7 +42,7 @@ Messages:
   Enter-Blacklisted-World: '&cYou have entered a &4&lBlacklisted &cworld'
 
   #If player tries to turn on fly in a blacklisted world (See config.yml for world blacklists).
-  Fl-Enabled-Blacklisted-World: '&cYou cannot use fly in a &4&lBlacklisted &cworld'
+  Fly-Enabled-Blacklisted-World: '&cYou cannot use fly in a &4&lBlacklisted &cworld'
 
   #🛑🛑🛑🛑🛑 IMPORTANT 🛑🛑🛑🛑🛑
   #When a player runs out of fuel while flying they are sent a few messages.

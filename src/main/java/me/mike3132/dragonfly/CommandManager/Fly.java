@@ -47,7 +47,7 @@ public class Fly implements CommandExecutor {
             if (player.hasPermission("dragonFly.NoFuel")) {
                 if (!FreeFlyingSet.getFlyingPlayers().contains(player.getUniqueId())) {
                     if (blacklistEnabled && blacklistedWorlds.contains(worldName)) {
-                        ChatMessages.sendMessage(player, "Fl-Enabled-Blacklisted-World");
+                        ChatMessages.sendMessage(player, "Fly-Enabled-Blacklisted-World");
                         return true;
                     }
                     FreeFlyManager.onAddPlayer(player);
@@ -63,7 +63,7 @@ public class Fly implements CommandExecutor {
                     }
                     if (!CostFlyingSet.getFlyingPlayers().contains(player.getUniqueId())) {
                         if (blacklistEnabled && blacklistedWorlds.contains(worldName)) {
-                            ChatMessages.sendMessage(player, "Fl-Enabled-Blacklisted-World");
+                            ChatMessages.sendMessage(player, "Fly-Enabled-Blacklisted-World");
                             return true;
                         }
                         CostFlyManager.onAddPlayer(player);
