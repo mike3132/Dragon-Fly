@@ -53,38 +53,30 @@ public final class Main extends JavaPlugin {
         ConfigCreator.MESSAGES.create();
 
         /**
-         *  This scheduler handles all current players flying at a cost. This will start running 20 ticks (1 second)
-         *  after the plugin loads. I first get a list of all online players, and then I check to see if the cost flying
-         *  players contains a player, I then check to see if they have the fuel material that is set in the config.yml
-         *  inside their inventory, and they have at least 1 fuel. If all checks are passed I give them flight and then
-         *  after every amount of ticks that has been set in the config.yml I remove 1 fuel from their inventory.
-         *  When the player runs out of fuel they are sent a message, and they are then added to the free-falling players
-         *  set.
+         * Global scheduler for all players, Checks to see if they have use /fly and if so starts taking fuel.
+         * If they run out of fuel it swaps their hashset and notifies them.
          */
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (CostFlyingSet.getFlyingPlayers().contains(player.getUniqueId())) {
-                    for (ItemStack item : player.getInventory().getContents()) {
-                        if (item != null && item.getType().equals(Material.valueOf(this.getConfig().getString("Fuel")))) {
-                            if (item.getAmount() >= 1) {
-                                item.setAmount(item.getAmount() - 1);
-                                player.updateInventory();
-                                break;
-                            }
-                        }
-                        if (!(player.getInventory().contains(Material.valueOf(this.getConfig().getString("Fuel"))))) {
-                            ChatMessages.sendMessage(player, "Out-Of-Fuel");
-                            ChatMessages.sendMessage(player, "Free-Falling-Message");
-                            CostFlyManager.onRemovePlayer(player);
-                            FallingPlayersSet.addFallingPlayers(player.getUniqueId());
-                            FallManager.onFallingPlayer(player);
-                            break;
-                        }
+            for (Player player: Bukkit.getOnlinePlayers()) {
+                if (!CostFlyingSet.getFlyingPlayers().contains(player.getUniqueId())) return;
+                for (ItemStack item : player.getInventory().getContents()) {
+                    if (item == null || item.getType() != (Material.valueOf(this.getConfig().getString("Fuel")))) {
+                        ChatMessages.sendMessage(player, "Out-Of-Fuel");
+                        ChatMessages.sendMessage(player, "Free-Falling-Message");
+                        CostFlyManager.onRemovePlayer(player);
+                        FallingPlayersSet.addFallingPlayers(player.getUniqueId());
+                        FallManager.onFallingPlayer(player);
+                        break;
+                    }
+                    if (item.getAmount() >= 1) {
+                        item.setAmount(item.getAmount() -1);
+                        player.updateInventory();
+                        break;
                     }
                 }
             }
-        }, 20L, plugin.getConfig().getInt("Fuel-Time"));
 
+        }, 20L, plugin.getConfig().getInt("Fuel-Time"));
     }
 
 
