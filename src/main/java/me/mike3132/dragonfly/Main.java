@@ -21,7 +21,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
     /**
-     *
      * @param chatColor The string of the chat color that is being used.
      * @return Returns the corresponding Bukkit color code to the & code that is used.
      */
@@ -57,20 +56,20 @@ public final class Main extends JavaPlugin {
          * If they run out of fuel it swaps their hashset and notifies them.
          */
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            for (Player player: Bukkit.getOnlinePlayers()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 if (!CostFlyingSet.getFlyingPlayers().contains(player.getUniqueId())) return;
                 for (ItemStack item : player.getInventory().getContents()) {
-                    if (item == null || item.getType() != (Material.valueOf(this.getConfig().getString("Fuel")))) {
+                    if (item != null && item.getType().equals(Material.valueOf(this.getConfig().getString("Fuel")))) {
+                        item.setAmount(item.getAmount() -1);
+                        player.updateInventory();
+                        break;
+                    }
+                    if (!player.getInventory().contains(Material.valueOf(this.getConfig().getString("Fuel")))) {
                         ChatMessages.sendMessage(player, "Out-Of-Fuel");
                         ChatMessages.sendMessage(player, "Free-Falling-Message");
                         CostFlyManager.onRemovePlayer(player);
                         FallingPlayersSet.addFallingPlayers(player.getUniqueId());
                         FallManager.onFallingPlayer(player);
-                        break;
-                    }
-                    if (item.getAmount() >= 1) {
-                        item.setAmount(item.getAmount() -1);
-                        player.updateInventory();
                         break;
                     }
                 }
