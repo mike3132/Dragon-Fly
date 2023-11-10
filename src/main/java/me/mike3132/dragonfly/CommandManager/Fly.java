@@ -33,7 +33,7 @@ public class Fly implements CommandExecutor {
                 ChatMessages.sendMessage(player, "No-Permission");
                 return false;
             }
-            if (!player.getGameMode().equals(GameMode.SURVIVAL)) {
+            if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) {
                 ChatMessages.sendMessage(player, "Not-In-Survival");
                 return false;
             }

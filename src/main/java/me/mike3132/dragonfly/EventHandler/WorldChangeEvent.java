@@ -3,6 +3,7 @@ package me.mike3132.dragonfly.EventHandler;
 import me.mike3132.dragonfly.ChatManager.ChatMessages;
 import me.mike3132.dragonfly.FlyManager.CostFlyManager;
 import me.mike3132.dragonfly.FlyManager.FreeFlyManager;
+import me.mike3132.dragonfly.HashSetManager.AdminFlyingSet;
 import me.mike3132.dragonfly.HashSetManager.CostFlyingSet;
 import me.mike3132.dragonfly.HashSetManager.FreeFlyingSet;
 import me.mike3132.dragonfly.Main;
@@ -51,6 +52,11 @@ public class WorldChangeEvent implements Listener {
                 CostFlyManager.onRemovePlayer(player);
                 ChatMessages.sendMessage(player, "Enter-Blacklisted-World");
             }
+        }
+
+        if (AdminFlyingSet.getFlyingAdmins().contains(player.getUniqueId())) {
+            player.setAllowFlight(true);
+            player.setFlying(true);
         }
 
     }
